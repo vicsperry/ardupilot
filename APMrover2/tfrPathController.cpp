@@ -83,7 +83,7 @@ void tfrPathController::PathControl(
     y_accln = kp_y * cross_track_error + integ_state_1 + kd_y * cross_track_rate_error;
 
     // Convert lateral acceleration to steering angle
-    L=3;
+    L=0.4286f;
     speed = x_dot_mea * cos_yaw + y_dot_mea * sin_yaw;
     speed = MAX(speed,0.1f);
     steering_angle = atanf(y_accln * L / speed*speed);
