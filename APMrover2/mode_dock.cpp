@@ -253,13 +253,9 @@ void ModeDOCK::throttle_controller()
     // actual speed along longitudinal axis of rover
     speed_actual = rover_speed_x( { velNED[0], velNED[1] }, yaw );
         
-    if( pPathCtl != NULL ) {
-        speed_setpoint = pathgen_fwd_speed_demand;
-    }
-
     // Apply TTSPID (Terrafugia Trivial Speed PID)
     if( pSpeedPid ) {
-        throttle_norm = pSpeedPid->PID_speed_control(speed_setpoint, speed_actual);
+        throttle_norm = pSpeedPid->PID_speed_control(pathgen_fwd_speed_demand, speed_actual);
     }
 
     // Convert throttle_norm in range -1.0..1.0 to a throttle_out value
