@@ -8,6 +8,23 @@ static tfrThrottleController *pSpeedPid = NULL;
 static tfrPathGenerator *pPathGen = NULL;
 static tfrPathController *pPathCtl = NULL;
 
+void docking_data(float &x_ref, float &y_ref, float &x_mea, float &y_mea, float &spd_dem)
+{
+    tfr_pg_refs_t refs;
+    pPathGen->GetRefs(refs);
+    x_ref = refs.x_ref;
+    y_ref = refs.y_ref;
+    pPathGen->GetSpdDem(spd_dem);
+    // position of Rover in local NED reference frame
+    Vector2f posNE = {0.0, 0.0};
+    if( ! AP::ahrs().get_relative_position_NE_home(posNE) ) {
+        gcs().send_text(MAV_SEVERITY_ERROR, "get_relative_position_NE_home() failed");
+        return;
+    }
+    x_mea = posNE[0];
+    y_mea = posNE[1];
+}
+
 //
 // Action to take upon entering DOCK mode
 //

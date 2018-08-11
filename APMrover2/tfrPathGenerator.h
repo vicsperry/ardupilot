@@ -17,8 +17,9 @@ typedef struct {
 class tfrPathGenerator{
 public:
     tfrPathGenerator(float x_mea, float y_mea, float theta_mea);
-    void PathGen(float x_mea, float y_mea, float x_dot_mea, float y_dot_mea, float &fwd_speed_demand);
+    void PathGen(float x_mea, float y_mea, float x_dot_mea, float y_dot_mea, float &spd_ref);
     void GetRefs(tfr_pg_refs_t &refs);
+    void GetSpdDem(float &spd_dem);
 private:
     float integ_state_theta;
     float theta_dot_prev;
@@ -35,4 +36,5 @@ private:
     bool initialized;
     uint32_t last_micros;
     int down_counter;
+    float fwd_speed_demand;
 };

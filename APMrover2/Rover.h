@@ -480,6 +480,7 @@ private:
     void Log_Write_Proximity();
     void Log_Write_Startup(uint8_t type);
     void Log_Write_Steering();
+    void Log_Write_Docking();
     void Log_Write_Throttle();
     void Log_Write_Rangefinder();
     void Log_Write_RC(void);

@@ -79,6 +79,8 @@ public:
     virtual bool requires_position() const { return true; }
     virtual bool requires_velocity() const { return true; }
 
+    virtual void docking_data(float &x_ref, float &y_ref, float &x_mea, float &y_mea, float &spd_dem);
+
     //
     // navigation methods
     //
@@ -498,6 +500,8 @@ public:
 
     float get_distance_to_destination() const override { return _distance_to_destination; }
     bool reached_destination() override { return _reached_destination; }
+
+    void docking_data(float &x_ref, float &y_ref, float &x_mea, float &y_mea, float &spd_dem);
 
 protected:
     bool _enter() override;

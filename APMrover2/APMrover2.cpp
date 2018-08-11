@@ -231,6 +231,8 @@ void Rover::update_logging2(void)
         Log_Write_Steering();
     }
 
+    Log_Write_Docking();
+
     if (should_log(MASK_LOG_RC)) {
         Log_Write_RC();
         Log_Write_WheelEncoder();

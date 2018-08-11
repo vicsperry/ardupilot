@@ -152,6 +152,16 @@ struct PACKED log_Steering {
     float turn_rate;
 };
 
+struct PACKED log_Docking {
+    LOG_PACKET_HEADER;
+    uint64_t time_us;
+    float x_ref;
+    float y_ref;
+    float x_mea;
+    float y_mea;
+    float spd_dem;
+};
+
 struct PACKED log_Startup {
     LOG_PACKET_HEADER;
     uint64_t time_us;
@@ -184,6 +194,23 @@ void Rover::Log_Write_Steering()
         lat_accel          : lat_accel,
         desired_turn_rate  : degrees(g2.attitude_control.get_desired_turn_rate()),
         turn_rate          : degrees(ahrs.get_yaw_rate_earth())
+    };
+    DataFlash.WriteBlock(&pkt, sizeof(pkt));
+}
+
+// Write a docking packet
+void Rover::Log_Write_Docking()
+{
+    float x_ref, y_ref, x_mea, y_mea, spd_dem;
+    control_mode->docking_data(x_ref, y_ref, x_mea, y_mea, spd_dem);
+    struct log_Docking pkt = {
+        LOG_PACKET_HEADER_INIT(LOG_DOCKING_MSG),
+        time_us     : AP_HAL::micros64(),
+        x_ref       : x_ref,
+        y_ref       : y_ref,
+        x_mea       : x_mea,
+        y_mea       : y_mea,
+        spd_dem     : spd_dem,
     };
     DataFlash.WriteBlock(&pkt, sizeof(pkt));
 }
@@ -350,5 +377,6 @@ void Rover::Log_Write_RC(void) {}
 void Rover::Log_Write_Steering() {}
 void Rover::Log_Write_WheelEncoder() {}\
 void Rover::Log_Write_Vehicle_Startup_Messages() {}
+void Rover::Log_Write_Docking() {}
 
 #endif  // LOGGING_ENABLED
