@@ -79,7 +79,7 @@ void tfrPathController::PathControl(
 
     // steer back to track using PID law to calculate lateral acceleration
     speed = x_dot_mea * cos_yaw + y_dot_mea * sin_yaw;
-    float cross_track_err_lim = 0.7*speed*kd_y/kp_y;
+    float cross_track_err_lim = 0.5f*speed*kd_y/kp_y;
     cross_track_error = constrain_float(cross_track_error,-cross_track_err_lim,cross_track_err_lim);
     integ_state_1 = integ_state_1 + dt * cross_track_error * ki_y;
     integ_state_1 = constrain_float(integ_state_1, -i_max, i_max);
