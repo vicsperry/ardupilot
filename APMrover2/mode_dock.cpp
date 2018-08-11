@@ -142,7 +142,22 @@ bool ModeDOCK::init_throttle_controller()
 void ModeDOCK::path_generator()
 {
     if( pPathGen ) {
-        pPathGen->PathGen(pathgen_kappa, pathgen_fwd_speed_demand);
+        // position of Rover in local NED reference frame
+        Vector2f posNE = {0.0, 0.0};
+
+        // Rover measured velocity in NED coordinate frame, m/s
+        Vector3f velNED = {0.0, 0.0, 0.0};
+
+        if( ! AP::ahrs().get_relative_position_NE_home(posNE) ) {
+            gcs().send_text(MAV_SEVERITY_ERROR, "get_relative_position_NE_home() failed");
+            return;
+        }
+
+        if( ! AP::ahrs().get_velocity_NED(velNED) ) {
+            gcs().send_text(MAV_SEVERITY_ERROR, "get_velocity_NED() failed");
+            return;
+        }
+        pPathGen->PathGen(posNE[0], posNE[1], velNED[0], velNED[1], pathgen_fwd_speed_demand);
     }
 }
 
@@ -239,7 +254,7 @@ void ModeDOCK::throttle_controller()
     speed_actual = rover_speed_x( { velNED[0], velNED[1] }, yaw );
         
     if( pPathCtl != NULL ) {
-        speed_setpoint = pPathCtl->SpeedDemand();
+        speed_setpoint = pathgen_fwd_speed_demand;
     }
 
     // Apply TTSPID (Terrafugia Trivial Speed PID)
