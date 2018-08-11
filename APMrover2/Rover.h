@@ -118,6 +118,7 @@ public:
     friend class ModeRTL;
     friend class ModeSmartRTL;
     friend class ModeFollow;
+    friend class ModeDOCK;
 
     Rover(void);
 
@@ -366,6 +367,7 @@ private:
     ModeRTL mode_rtl;
     ModeSmartRTL mode_smartrtl;
     ModeFollow mode_follow;
+    ModeDOCK mode_dock;
 
     // cruise throttle and speed learning
     struct {

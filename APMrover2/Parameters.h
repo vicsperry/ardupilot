@@ -350,6 +350,54 @@ public:
 
     // follow mode library
     AP_Follow follow;
+
+    // value by which to multiply Terrafugia Rover's throttle_norm to produce throttle_out
+    AP_Float tfr_throttle_scale;
+
+    // default initial value of Terrafugia Rover's speed_setpoint
+    AP_Float tfr_speed_setpoint_default;
+
+    // Terrafugia Rover throttle PID proportional constant (Kp)
+    AP_Float tfr_throttle_kp;
+
+    // Terrafugia Rover throttle PID integral constant (Ki)
+    AP_Float tfr_throttle_ki;
+
+    // Terrafugia Rover throttle PID derivative constant (Kd)
+    AP_Float tfr_throttle_kd;
+
+    // Terrafugia Rover throttle PID feed-forward constant (Kff)
+    AP_Float tfr_throttle_kff;
+
+    // Terrafugia Rover throttle PID integral limit constant (ilim)
+    AP_Float tfr_throttle_ilim;
+
+    // Terrafugia Rover path generator kappa default
+    AP_Float tfr_pathgen_kappa;
+
+    // Terrafugia Rover path generator fwd_speed_demand default
+    AP_Float tfr_pathgen_fwd_speed_demand;
+
+    // Terrafugia Rover path controller Kp_y
+    AP_Float tfr_pathctl_kp_y;
+
+    // Terrafugia Rover path controller Ki_y
+    AP_Float tfr_pathctl_ki_y;
+
+    // Terrafugia Rover path controller kd_y
+    AP_Float tfr_pathctl_kd_y;
+
+    // Terrafugia Rover path controller i_max
+    AP_Float tfr_pathctl_i_max;
+
+    // Terrafugia Rover path controller Kp_v
+    AP_Float tfr_pathctl_kp_v;
+
+    // Terrafugia Rover path controller v_max
+    AP_Float tfr_pathctl_v_max;
+
+    // Terrafugia Rover steering angle scalefactor
+    AP_Float tfr_steering_sf;
 };
 
 extern const AP_Param::Info var_info[];

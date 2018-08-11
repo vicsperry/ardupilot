@@ -28,6 +28,7 @@ public:
         AUTO         = 10,
         RTL          = 11,
         SMART_RTL    = 12,
+        DOCK         = 13,
         GUIDED       = 15,
         INITIALISING = 16
     };
@@ -480,4 +481,47 @@ public:
 protected:
 
     bool _enter() override;
+};
+
+class ModeDOCK : public Mode
+{
+public:
+
+    uint32_t mode_number() const override { return DOCK; }
+    const char *name4() const override { return "DOCK"; }
+
+    // methods that affect movement of the vehicle in this mode
+    void update() override;
+
+    // attributes of the mode
+    bool is_autopilot_mode() const override { return true; }
+
+    float get_distance_to_destination() const override { return _distance_to_destination; }
+    bool reached_destination() override { return _reached_destination; }
+
+protected:
+    bool _enter() override;
+    void _exit() override;
+
+private:
+    bool docking = false;
+    int down_counter = 0;
+
+    // speed_setpoint is the current speed along Rover frame longitudinal axix in m/s
+    float speed_setpoint = 0.0;
+
+    // value by which to multiply throttle_norm to produce throttle_out
+    float throttle_scale = 0.0;
+
+    float pathgen_kappa = 1.0;
+    float pathgen_fwd_speed_demand = 0.5;
+
+    bool init_path_generator();
+    bool init_path_controller();
+    bool init_throttle_controller();
+    void path_generator();
+    void path_controller();
+    void set_steering_output();
+    void throttle_controller();
+    float rover_speed_x(Vector2f velNE, float yaw);
 };

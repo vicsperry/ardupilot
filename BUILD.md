@@ -19,8 +19,8 @@ list some basic and more used commands as example.
     Below shows how to build ArduCopter for the Pixhawk2/Cube. Many other boards are
     supported and the next section shows how to get a full list of them.
 
-    ```sh
-    ./waf configure --board px4-v3
+    ```
+    ./waf configure --board px4-v3  
     ./waf copter
     ```
 
@@ -29,15 +29,15 @@ list some basic and more used commands as example.
     switch from one board to another one. For example we could switch to
     SkyViper GPS drone and build again:
 
-    ```sh
-    ./waf configure --board skyviper-v2450
+    ```
+    ./waf configure --board skyviper-v2450  
     ./waf copter
     ```
 
     If building for the bebop2 the binary must be built statically:
 
-    ```sh
-    ./waf configure --board bebop --static
+    ```
+    ./waf configure --board bebop --static  
     ./waf copter
     ```    
 
@@ -49,27 +49,25 @@ list some basic and more used commands as example.
     It's possible to get a list of supported boards on ArduPilot with the command
     below
 
-    ```sh
+    ```
     ./waf list_boards
-
     ```
 
     Here are some commands to configure waf for commonly used boards:
 
-    ```sh
-    ./waf configure --board bebop --static # Bebop or Bebop2
-    ./waf configure --board edge           # emlid edge
-    ./waf configure --board navio2         # emlid navio2
-    ./waf configure --board px4-v1         # the very old two layer Pixhawk (almost none exist)
-    ./waf configure --board px4-v2         # older Pixhawks that suffer from the 1MB flash limit issue
-    ./waf configure --board px4-v3         # Pixhawk2/Cube and newer Pixhawks with no 1MB flash limit issue
-    ./waf configure --board fmuv3          # Pixhawk2/Cube using ChibiOS
-    ./waf configure --board px4-v4         # Pixracer
-    ./waf configure --board fmuv4          # Pixracer using ChibiOS
-    ./waf configure --board skyviper-v2450 # SkyRocket's SkyViper GPS drone using ChibiOS
-    ./waf configure --board sitl           # software-in-the-loop simulator
-    ./waf configure --board sitl --debug   # software-in-the-loop simulator with debug symbols
-
+    ```
+    ./waf configure --board bebop --static # Bebop or Bebop2  
+    ./waf configure --board edge           # emlid edge  
+    ./waf configure --board navio2         # emlid navio2  
+    ./waf configure --board px4-v1         # the very old two layer Pixhawk (almost none exist)  
+    ./waf configure --board px4-v2         # older Pixhawks that suffer from the 1MB flash limit issue  
+    ./waf configure --board px4-v3         # Pixhawk2/Cube and newer Pixhawks with no 1MB flash limit issue  
+    ./waf configure --board fmuv3          # Pixhawk2/Cube using ChibiOS  
+    ./waf configure --board px4-v4         # Pixracer  
+    ./waf configure --board fmuv4          # Pixracer using ChibiOS  
+    ./waf configure --board skyviper-v2450 # SkyRocket's SkyViper GPS drone using ChibiOS  
+    ./waf configure --board sitl           # software-in-the-loop simulator  
+    ./waf configure --board sitl --debug   # software-in-the-loop simulator with debug symbols  
     ```
 
 * **Clean the build**
@@ -89,22 +87,22 @@ list some basic and more used commands as example.
     to a connected board. This option is supported by Pixhawk and Linux-based boards.
     The command below uses the `--targets` option that is explained in the next item.
 
-    ```sh
+    ```
     ./waf --targets bin/arducopter --upload
     ```
 
     For Linux boards you need first to configure the IP of the board you
     are going to upload to. This is done on configure phase with:
 
-    ```sh
+    ```
     ./waf configure --board <board> --rsync-dest <destination>
     ```
 
     The commands below give a concrete example (board and destination
     IP will change according to the board used):
 
-    ```sh
-    ./waf configure --board navio2 --rsync-dest root@192.168.1.2:/
+    ```
+    ./waf configure --board navio2 --rsync-dest root@192.168.1.2:/  
     ./waf --target bin/arducopter --upload
     ```
 
@@ -116,8 +114,8 @@ list some basic and more used commands as example.
     directory, just like the temporary install above does. This can be
     used by distributors to create .deb, .rpm or other package types:
 
-    ```sh
-    ./waf copter
+    ```
+    ./waf copter  
     DESTDIR=/my/temporary/location ./waf install
     ```
 
@@ -137,11 +135,8 @@ list some basic and more used commands as example.
     For example, to build only a single binary:
 
     ```
-    # Quad frame of ArduCopter
-    ./waf --targets bin/arducopter
-
-    # unit test of our math functions
-    ./waf --targets tests/test_math
+	./waf --targets bin/arducopter # Quad frame of ArduCopter  
+    ./waf --targets tests/test_math   # unit test of our math functions
     ```
 
 * **Other options**
@@ -163,20 +158,16 @@ Waf build system is composed of commands. For example, the command below
 (`configure`) is for configuring the build with all the options used by this
 particular build.
 
-```bash
-# Configure the Linux board
-./waf configure --board=linux
+```
+./waf configure --board=linux   # Configure the Linux board  
 ```
 
 Consequently, in order to build, a "build" command is issued, thus `waf build`.
 That is the default command, so calling just `waf` is enough:
 
-```bash
-# Build programs from bin group
-./waf
-
-# Waf also accepts '-j' option to parallelize the build.
-./waf -j8
+```
+./waf  # Build programs from bin group  
+./waf -j8  # Waf also accepts '-j' option to parallelize the build.  
 ```
 
 By default waf tries to parallelize the build automatically to all processors
@@ -240,29 +231,19 @@ default. The option `--program-group` can be passed multiple times.
 
 Examples:
 
-```bash
-# Group bin is the default one
-./waf
-
-# Build all vehicles and Antenna Tracker
-./waf --program-group bin
-
-# Build all benchmarks and tests
-./waf --program-group benchmarks --program-group tests
+```
+./waf # Group bin is the default one  
+./waf --program-group bin  # Build all vehicles and Antenna Tracker  
+./waf --program-group benchmarks --program-group tests   # Build all benchmarks and tests  
 ```
 #### Shortcut for program groups ####
 
 For less typing, you can use the group name as the command to waf. Examples:
 
-```bash
-# Build all vehicles and Antenna Tracker
-./waf bin
-
-# Build all examples
-./waf examples
-
-# Build arducopter binaries
-./waf copter
+```
+./waf bin   # Build all vehicles and Antenna Tracker  
+./waf examples  # Build all examples  
+./waf copter   # Build arducopter binaries  
 ```
 
 ### Building a specific program ###
@@ -270,12 +251,9 @@ For less typing, you can use the group name as the command to waf. Examples:
 In order to build a specific program, you just need to pass its path relative
 to `build/<board>/` to the option `--targets`. Example:
 
-```bash
-# Build arducopter for quad frame
-./waf --targets bin/arducopter
-
-# Build vectors unit test
-./waf --targets tests/test_vectors
+```
+./waf --targets bin/arducopter    # Build arducopter for quad frame  
+./waf --targets tests/test_vectors   # Build vectors unit test  
 ```
 
 ### Checking ###
@@ -296,15 +274,10 @@ then you can use either option `--alltests` or the shortcut command
 
 Examples:
 
-```bash
-# Build everything and run relevant tests
-./waf check
-
-# Build everything and run all tests
-./waf check --alltests
-
-# Build everything and run all tests
-./waf check-all
+```
+./waf check  # Build everything and run relevant tests  
+./waf check --alltests    # Build everything and run all tests  
+./waf check-all    # Build everything and run all tests  
 ```
 
 ### Debugging ###
@@ -320,9 +293,8 @@ maintained in its own submodule.  It's possible to call the latter directly via
 `./modules/waf/waf-light` or to use an alias if you prefer typing `waf` over
 `./waf`.
 
-```sh
+```
 alias waf="<ardupilot-directory>/modules/waf/waf-light"
-
 ```
 
 There's also a make wrapper called `Makefile.waf`. You can use

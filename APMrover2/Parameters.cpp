@@ -224,7 +224,7 @@ const AP_Param::Info Rover::var_info[] = {
 
     // @Param: MODE1
     // @DisplayName: Mode1
-    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,15:Guided
+    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,13:DOCK,15:Guided
     // @User: Standard
     // @Description: Driving mode for switch position 1 (910 to 1230 and above 2049)
     GSCALAR(mode1,           "MODE1",         Mode::Number::MANUAL),
@@ -232,35 +232,35 @@ const AP_Param::Info Rover::var_info[] = {
     // @Param: MODE2
     // @DisplayName: Mode2
     // @Description: Driving mode for switch position 2 (1231 to 1360)
-    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,15:Guided
+    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,13:DOCK,15:Guided
     // @User: Standard
     GSCALAR(mode2,           "MODE2",         Mode::Number::MANUAL),
 
     // @Param: MODE3
     // @DisplayName: Mode3
     // @Description: Driving mode for switch position 3 (1361 to 1490)
-    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,15:Guided
+    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,13:DOCK,15:Guided
     // @User: Standard
     GSCALAR(mode3,           "MODE3",         Mode::Number::MANUAL),
 
     // @Param: MODE4
     // @DisplayName: Mode4
     // @Description: Driving mode for switch position 4 (1491 to 1620)
-    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,15:Guided
+    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,13:DOCK,15:Guided
     // @User: Standard
     GSCALAR(mode4,           "MODE4",         Mode::Number::MANUAL),
 
     // @Param: MODE5
     // @DisplayName: Mode5
     // @Description: Driving mode for switch position 5 (1621 to 1749)
-    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,15:Guided
+    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,13:DOCK,15:Guided
     // @User: Standard
     GSCALAR(mode5,           "MODE5",         Mode::Number::MANUAL),
 
     // @Param: MODE6
     // @DisplayName: Mode6
     // @Description: Driving mode for switch position 6 (1750 to 2049)
-    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,15:Guided
+    // @Values: 0:Manual,1:Acro,3:Steering,4:Hold,5:Loiter,6:FOLLOW,10:Auto,11:RTL,12:SmartRTL,13:DOCK,15:Guided
     // @User: Standard
     GSCALAR(mode6,           "MODE6",         Mode::Number::MANUAL),
 
@@ -568,6 +568,150 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
     // @Group: FOLL
     // @Path: ../libraries/AP_Follow/AP_Follow.cpp
     AP_SUBGROUPINFO(follow, "FOLL", 23, ParametersG2, AP_Follow),
+
+    // @Param: TFR_THR_SCALE
+    // @DisplayName: Terrafugia Rover's DOCK mode output throttle scaling
+    // @Description: Value by which to multiply throttle_norm to produce throttle_out
+    // @Units: scalar
+    // @Range: -100.0 100.0
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_THR_SCALE", 24, ParametersG2, tfr_throttle_scale, 100.0f),
+
+    // @Param: TFR_SPD_DEF
+    // @DisplayName: Terrafugia Rover's DOCK mode speed_setpoint default value
+    // @Description: Value used to initialize speed_setpoint in DOCK mode
+    // @Units: m/s
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_SPD_DEF", 25, ParametersG2, tfr_speed_setpoint_default, 0.5f),
+
+    // @Param: TFR_THR_KP
+    // @DisplayName: TF Rover throttle PID Kp
+    // @Description: Terrafugia Rover throttle PID proportional constant (Kp)
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_THR_KP", 26, ParametersG2, tfr_throttle_kp, 0.2f),
+    
+    // @Param: TFR_THR_KI
+    // @DisplayName: TF Rover throttle PID Ki
+    // @Description: Terrafugia Rover throttle PID integral constant (Ki)
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_THR_KI", 27, ParametersG2, tfr_throttle_ki, 0.004f),
+
+    // @Param: TFR_THR_KD
+    // @DisplayName: TF Rover throttle PID Kd
+    // @Description: Terrafugia Rover throttle PID derivative constant (Kd)
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_THR_KD", 28, ParametersG2, tfr_throttle_kd, 0.02f),
+
+    // @Param: TFR_THR_KFF
+    // @DisplayName: TF Rover throttle PID Kff
+    // @Description: Terrafugia Rover throttle PID feed-forward constant (Kff)
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_THR_KFF", 29, ParametersG2, tfr_throttle_kff, 0.2f),
+
+    // @Param: TFR_THR_ILIM
+    // @DisplayName: TF Rover throttle PID ilim
+    // @Description: Terrafugia Rover throttle PID integral limit constant (ilim)
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_THR_ILIM", 30, ParametersG2, tfr_throttle_ilim, 0.2f),
+
+    // @Param: TFR_PG_KAPPA
+    // @DisplayName: TF Rover path gen kappa default
+    // @Description: Terrafugia Rover path generator kappa default
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PG_KAPPA", 31, ParametersG2, tfr_pathgen_kappa, 0.0f),
+
+    // @Param: TFR_PG_FWD
+    // @DisplayName: TF Rover path gen fwd speed demand default
+    // @Description: Terrafugia Rover path generator forward speed demand default
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PG_FWD", 32, ParametersG2, tfr_pathgen_fwd_speed_demand, 0.5f),
+
+    // @Param: TFR_PC_
+    // @DisplayName: TF Rover path ctl kp_y
+    // @Description: Terrafugia Rover path controller kp_y
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PC_KP_Y", 33, ParametersG2, tfr_pathctl_kp_y, 1.0f),
+
+    // @Param: TFR_PC_KI_Y
+    // @DisplayName: TF Rover path ctl ki_y
+    // @Description: Terrafugia Rover path controller ki_y
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PC_KI_Y", 34, ParametersG2, tfr_pathctl_ki_y, 0.0f),
+
+    // @Param: TFR_PC_KD_Y
+    // @DisplayName: TF Rover path ctl kd_y
+    // @Description: Terrafugia Rover path controller kd_y
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PC_KD_Y", 35, ParametersG2, tfr_pathctl_kd_y, 1.4f),
+
+    // @Param: TFR_PC_I_MAX
+    // @DisplayName: TF Rover path ctl i_max
+    // @Description: Terrafugia Rover path controller i_max
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PC_I_MAX", 36, ParametersG2, tfr_pathctl_i_max, 0.1f),
+
+    // @Param: TFR_PC_KP_V
+    // @DisplayName: TF Rover path ctl i_max
+    // @Description: Terrafugia Rover path controller i_max
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PC_KP_V", 37, ParametersG2, tfr_pathctl_kp_v, 1.0f),
+
+    // @Param: TFR_PC_V_MAX
+    // @DisplayName: TF Rover path ctl v_max
+    // @Description: Terrafugia Rover path controller v_max
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_PC_V_MAX", 38, ParametersG2, tfr_pathctl_v_max, 5.0),
+
+    // @Param: TFR_STEERSF
+    // @DisplayName: TF Rover steering scale factor
+    // @Description: Terrafugia Rover steering scale factor to convert steering_angle in radians to -1..+1
+    // @Units: scalar
+    // @Range: -inf inf
+    // @Increment: 0.000001
+    // @User: Advanced
+    AP_GROUPINFO("TFR_STEERSF", 39, ParametersG2, tfr_steering_sf, 1.0/M_PI),
 
     AP_GROUPEND
 };

@@ -63,7 +63,9 @@ void setup()
 void loop()
 {
     static uint32_t last_msg_ms;
-
+    static int32_t counter = 100;
+    static char     i_or_o  = 'i';
+        
     // Update GPS state based on possible bytes received from the module.
     gps.update();
 
@@ -95,6 +97,14 @@ void loop()
 
     // Delay for 10 mS will give us 100 Hz invocation rate
     hal.scheduler->delay(10);
+
+    counter--;
+    if( counter <= 0 ) {
+        counter = 100;
+        hal.console->printf("P%cng\n", i_or_o);
+        i_or_o ^= 0x06;
+    }
+
 }
 
 // Register above functions in HAL board level

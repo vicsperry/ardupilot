@@ -30,6 +30,9 @@ Mode *Rover::mode_from_mode_num(const enum Mode::Number num)
     case Mode::Number::RTL:
         ret = &mode_rtl;
         break;
+    case Mode::Number::DOCK:
+        ret = &mode_dock;
+        break;
     case Mode::Number::SMART_RTL:
         ret = &mode_smartrtl;
         break;
