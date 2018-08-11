@@ -16,9 +16,10 @@ Author: Ming Xin / Paul Riseborough / Vic Sperry
 #include "tfrPathGenerator.h"
 
 tfrPathGenerator::tfrPathGenerator(float x_mea, float y_mea, float theta_mea) {
-    integ_state_theta = theta_mea;
-    integ_state_x     = x_mea;
-    integ_state_y     = y_mea;
+    integ_state_theta = radians(5.0f);
+    float radius = sqrtf(x_mea*x_mea+y_mea*y_mea);
+    integ_state_x     = -radius*cosf(integ_state_theta);
+    integ_state_y     = -radius*sinf(integ_state_theta);;
     initialized       = false;
 #ifdef TFR_PATH_GEN_DEBUG
     gcs().send_text(MAV_SEVERITY_INFO, "\ntfrPathGenerator initialized with:");
@@ -30,6 +31,9 @@ tfrPathGenerator::tfrPathGenerator(float x_mea, float y_mea, float theta_mea) {
 
 void tfrPathGenerator::PathGen(float kappa, float fwd_speed_demand)
 {
+    if (sqrtf(x_ref*x_ref+y_ref*y_ref) < 1.0f) {
+        fwd_speed_demand = 0.0f;
+    }
     uint32_t micros;
     float dt;
 
