@@ -353,6 +353,9 @@ const LogStructure Rover::log_structure[] = {
       "ERR",   "QBB",         "TimeUS,Subsys,ECode", "s--", "F--" },
     { LOG_WHEELENCODER_MSG, sizeof(log_WheelEncoder),
       "WENC",  "Qfbffbf", "TimeUS,Dist0,Qual0,RPM0,Dist1,Qual1,RPM1", "sm-qm-q", "F0--0--" },
+    { LOG_DOCKING_MSG, sizeof(log_Docking),
+      "TFR1",  "Qfffff", "TimeUS,XR,YR,XM,YM,SPD, "s-----", "F-----" },
+
 };
 
 void Rover::log_init(void)
