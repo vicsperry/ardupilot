@@ -9,8 +9,6 @@ Author: Ming Xin / Paul Riseborough / Vic Sperry
 // TODO: comment out
 #define TFR_PATH_CTL_DEBUG 1
 
-#include <algorithm>
-
 #ifdef TFR_PATH_CTL_DEBUG
 #include "Rover.h"  // for access to gcs().send_text()
 #endif
@@ -87,17 +85,17 @@ void tfrPathController::PathControl(
     // Convert lateral acceleration to steering angle
     L=3;
     speed = x_dot_mea * cos_yaw + y_dot_mea * sin_yaw;
-    speed = std::max(speed,0.1f);
+    speed = MAX(speed,0.1f);
     steering_angle = atanf(y_accln * L / speed*speed);
 
     // add feed forward term based on predicted path curvature
-    steering_angle = steering_angle + atan(yaw_rate_ref * L / speed);
+    steering_angle = steering_angle + atanf(yaw_rate_ref * L / speed);
 
     // calculate speed demand
     speed_demand = sqrtf(x_dot_ref * x_dot_ref + y_dot_ref * y_dot_ref);
     along_track_error = cos_yaw * x_err + sin_yaw * y_err;
     speed_demand = speed_demand + kp_v * along_track_error;
-    speed_demand = std::min(speed_demand, v_max);
+    speed_demand = MIN(speed_demand, v_max);
 
     initialized = true;
 }
