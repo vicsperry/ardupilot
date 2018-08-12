@@ -57,6 +57,7 @@ void tfrPathGenerator::PathGen(float x_mea, float y_mea, float x_dot_mea, float 
     }
 
     fwd_speed_demand = spd_ref;
+    theta_ref_dot = 0.0f;
 }
 
 void tfrPathGenerator::GetRefs(tfr_pg_refs_t &refs)
