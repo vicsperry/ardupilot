@@ -79,6 +79,7 @@ void tfrPathController::PathControl(
 
     // steer back to track using PID law to calculate lateral acceleration
     speed = x_dot_mea * cos_yaw + y_dot_mea * sin_yaw;
+    speed = MAX(speed,0.1f);
     float cross_track_err_lim = 0.5f*speed*kd_y/kp_y;
     cross_track_error = constrain_float(cross_track_error,-cross_track_err_lim,cross_track_err_lim);
     integ_state_1 = integ_state_1 + dt * cross_track_error * ki_y;
@@ -86,9 +87,7 @@ void tfrPathController::PathControl(
     y_accln = kp_y * cross_track_error + integ_state_1 + kd_y * cross_track_rate_error;
 
     // Convert lateral acceleration to steering angle
-    L=0.4286f;
-    speed = x_dot_mea * cos_yaw + y_dot_mea * sin_yaw;
-    speed = MAX(speed,0.1f);
+    L = 0.4286f;
     steering_angle = atanf(y_accln * L / speed*speed);
 
     // add feed forward term based on predicted path curvature
